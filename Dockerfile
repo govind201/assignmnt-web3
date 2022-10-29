@@ -1,7 +1,16 @@
-FROM node:16-alpine
-WORKDIR /usr/src/app
+FROM node:10-alpine
+RUN apk update
+WORKDIR /app
+
 COPY package*.json ./
+COPY tsconfig.json ./
+COPY src /app/src
+
+RUN ls -a
+
 RUN npm install
-COPY . .
-EXPOSE 8080
-CMD [ "node", "server.js" ]
+RUN npm run build
+
+EXPOSE 8000
+
+CMD [ "node", "./dist/main.js" ]
